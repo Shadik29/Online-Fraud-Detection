@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fraud Detection System</title>
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      padding: 20px;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      padding: 18px 40px;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 99;
+    }
+    nav .logo { font-size: 1.5em; font-weight: 700; letter-spacing: 1px; }
+    nav .logo span { color: #e94560; }
+
+    /* ── HERO ── */
+    .hero {
+      text-align: center;
+      max-width: 750px;
+      padding: 40px 20px;
+    }
+    .badge {
+      display: inline-block;
+      background: rgba(233,69,96,0.2);
+      border: 1px solid #e94560;
+      color: #e94560;
+      padding: 6px 18px;
+      border-radius: 50px;
+      font-size: 0.85em;
+      letter-spacing: 1px;
+      margin-bottom: 25px;
+    }
+    h1 {
+      font-size: 3em;
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+    h1 span { color: #e94560; }
+    .subtitle {
+      font-size: 1.1em;
+      color: #a8b2d8;
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+
+    /* ── CARDS ── */
+    .cards {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 50px;
+    }
+    .card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 25px 20px;
+      width: 200px;
+      text-align: center;
+      transition: transform 0.3s, border-color 0.3s;
+    }
+    .card:hover { transform: translateY(-5px); border-color: #e94560; }
+    .card .icon { font-size: 2.5em; margin-bottom: 12px; }
+    .card h3 { font-size: 0.95em; color: #e94560; margin-bottom: 6px; }
+    .card p  { font-size: 0.82em; color: #a8b2d8; }
+
+    /* ── BUTTON ── */
+    .btn-group { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-block;
+      padding: 16px 45px;
+      border-radius: 50px;
+      font-size: 1.05em;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .btn-primary { background: #e94560; color: #fff; }
+    .btn-primary:hover { background: #c73652; transform: scale(1.05); box-shadow: 0 8px 25px rgba(233,69,96,0.4); }
+    .btn-secondary { background: transparent; border: 2px solid rgba(255,255,255,0.3); color: #fff; }
+    .btn-secondary:hover { border-color: #e94560; color: #e94560; }
+
+    /* ── ACCURACY BADGE ── */
+    .accuracy {
+      margin-top: 50px;
+      padding: 15px 35px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 50px;
+      border: 1px solid rgba(255,255,255,0.1);
+      font-size: 0.95em;
+      color: #a8b2d8;
+    }
+    .accuracy strong { color: #4ade80; font-size: 1.2em; }
+
+    /* ── FOOTER ── */
+    footer {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      text-align: center;
+      padding: 12px;
+      font-size: 0.8em;
+      color: rgba(255,255,255,0.3);
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <span>🛡️</span>
+    <span class="logo">Fraud<span>Guard</span></span>
+  </nav>
+
+  <div class="hero">
+    <div class="badge">🤖 Machine Learning Powered</div>
+    <h1>Online Payments<br/><span>Fraud Detection</span></h1>
+    <p class="subtitle">
+      Detect fraudulent transactions in real-time using a Random Forest
+      model trained on 6.3 million transaction records.
+      Protect your business and customers instantly.
+    </p>
+
+    <div class="cards">
+      <div class="card">
+        <div class="icon">⚡</div>
+        <h3>Real-time</h3>
+        <p>Instant fraud detection on every transaction</p>
+      </div>
+      <div class="card">
+        <div class="icon">🎯</div>
+        <h3>99.24% Accuracy</h3>
+        <p>Trained on real payment transaction data</p>
+      </div>
+      <div class="card">
+        <div class="icon">🔒</div>
+        <h3>Secure</h3>
+        <p>Protects businesses and customers</p>
+      </div>
+    </div>
+
+    <div class="btn-group">
+      <a href="/predict" class="btn btn-primary">🔍 Check Transaction</a>
+      <a href="https://github.com" class="btn btn-secondary" target="_blank">📂 View Project</a>
+    </div>
+
+    <div class="accuracy">
+      Model Accuracy: <strong>99.24%</strong> &nbsp;|&nbsp;
+      Trained on: <strong>38,213</strong> samples &nbsp;|&nbsp;
+      Algorithm: <strong>Random Forest</strong>
+    </div>
+  </div>
+
+  <footer>Online Payments Fraud Detection System · Built with Flask &amp; Scikit-learn</footer>
+
+</body>
+</html>

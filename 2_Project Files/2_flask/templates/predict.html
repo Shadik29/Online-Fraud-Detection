@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Enter Transaction | FraudGuard</title>
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 15px;
+      color: #fff;
+    }
+
+    .wrapper {
+      display: flex;
+      gap: 40px;
+      max-width: 1000px;
+      width: 100%;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* ── FORM CARD ── */
+    .form-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 24px;
+      padding: 40px 35px;
+      width: 100%;
+      max-width: 480px;
+      backdrop-filter: blur(12px);
+    }
+
+    .form-card h2 {
+      font-size: 1.7em;
+      margin-bottom: 6px;
+    }
+    .form-card h2 span { color: #e94560; }
+    .form-card .sub {
+      font-size: 0.9em;
+      color: #a8b2d8;
+      margin-bottom: 30px;
+    }
+
+    .form-group { margin-bottom: 18px; }
+    label {
+      display: block;
+      font-size: 0.88em;
+      color: #a8b2d8;
+      margin-bottom: 7px;
+      letter-spacing: 0.5px;
+    }
+    label span { color: #e94560; }
+
+    input, select {
+      width: 100%;
+      padding: 13px 16px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 12px;
+      color: #fff;
+      font-size: 0.97em;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: #e94560;
+      background: rgba(255,255,255,0.1);
+    }
+    input::placeholder { color: rgba(255,255,255,0.3); }
+    select option { background: #302b63; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    .btn-submit {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, #e94560, #c73652);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1em;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: all 0.3s;
+      letter-spacing: 0.5px;
+    }
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(233,69,96,0.45);
+    }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 18px;
+      color: #a8b2d8;
+      text-decoration: none;
+      font-size: 0.9em;
+      transition: color 0.3s;
+    }
+    .back-link:hover { color: #e94560; }
+
+    /* ── INFO PANEL ── */
+    .info-panel { max-width: 340px; }
+    .info-panel h3 { font-size: 1.1em; margin-bottom: 20px; color: #e94560; }
+
+    .tip {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-left: 3px solid #e94560;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 14px;
+      font-size: 0.87em;
+      color: #a8b2d8;
+      line-height: 1.6;
+    }
+    .tip strong { color: #fff; display: block; margin-bottom: 4px; }
+
+    .sample-box {
+      background: rgba(78,222,128,0.07);
+      border: 1px solid rgba(78,222,128,0.2);
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 20px;
+      font-size: 0.85em;
+    }
+    .sample-box h4 { color: #4ade80; margin-bottom: 10px; }
+    .sample-box table { width: 100%; border-collapse: collapse; }
+    .sample-box td { padding: 4px 6px; color: #a8b2d8; }
+    .sample-box td:first-child { color: #fff; font-weight: 600; }
+
+    .fraud-sample {
+      background: rgba(233,69,96,0.07);
+      border-color: rgba(233,69,96,0.25);
+      margin-top: 12px;
+    }
+    .fraud-sample h4 { color: #e94560; }
+  </style>
+</head>
+<body>
+
+<div class="wrapper">
+
+  <!-- ── FORM ── -->
+  <div class="form-card">
+    <h2>🔍 Transaction <span>Details</span></h2>
+    <p class="sub">Fill in the transaction information to check for fraud</p>
+
+    <form action="/submit" method="POST">
+
+      <div class="form-group">
+        <label>Step <span>(time unit, e.g. 1–744)</span></label>
+        <input type="number" name="step" placeholder="e.g. 1" min="1" required/>
+      </div>
+
+      <div class="form-group">
+        <label>Transaction Type <span>*</span></label>
+        <select name="type" required>
+          <option value="" disabled selected>-- Select type --</option>
+          <option value="CASH_IN">CASH_IN</option>
+          <option value="CASH_OUT">CASH_OUT</option>
+          <option value="DEBIT">DEBIT</option>
+          <option value="PAYMENT">PAYMENT</option>
+          <option value="TRANSFER">TRANSFER</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Amount ($) <span>*</span></label>
+        <input type="number" step="0.01" name="amount" placeholder="e.g. 9839.64" required/>
+      </div>
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label>Sender Old Balance</label>
+          <input type="number" step="0.01" name="oldbalanceOrg" placeholder="e.g. 170136.00" required/>
+        </div>
+        <div class="form-group">
+          <label>Sender New Balance</label>
+          <input type="number" step="0.01" name="newbalanceOrig" placeholder="e.g. 160296.36" required/>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label>Receiver Old Balance</label>
+          <input type="number" step="0.01" name="oldbalanceDest" placeholder="e.g. 0.00" required/>
+        </div>
+        <div class="form-group">
+          <label>Receiver New Balance</label>
+          <input type="number" step="0.01" name="newbalanceDest" placeholder="e.g. 0.00" required/>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-submit">🚨 Detect Fraud</button>
+    </form>
+
+    <a href="/" class="back-link">← Back to Home</a>
+  </div>
+
+  <!-- ── INFO PANEL ── -->
+  <div class="info-panel">
+    <h3>📖 Field Guide</h3>
+
+    <div class="tip"><strong>Step</strong>Each step = 1 hour. Max 744 steps (30 days).</div>
+    <div class="tip"><strong>Transaction Type</strong>TRANSFER &amp; CASH_OUT are most associated with fraud.</div>
+    <div class="tip"><strong>Amount</strong>The transaction amount in dollars.</div>
+    <div class="tip"><strong>Old / New Balance</strong>Balance before and after the transaction for both sender and receiver.</div>
+
+    <!-- Sample LEGIT -->
+    <div class="sample-box">
+      <h4>✅ Sample Legitimate</h4>
+      <table>
+        <tr><td>Step</td><td>1</td></tr>
+        <tr><td>Type</td><td>PAYMENT</td></tr>
+        <tr><td>Amount</td><td>9839.64</td></tr>
+        <tr><td>Old Bal (S)</td><td>170136.00</td></tr>
+        <tr><td>New Bal (S)</td><td>160296.36</td></tr>
+        <tr><td>Old Bal (R)</td><td>0.00</td></tr>
+        <tr><td>New Bal (R)</td><td>0.00</td></tr>
+      </table>
+    </div>
+
+    <!-- Sample FRAUD -->
+    <div class="sample-box fraud-sample">
+      <h4>🚨 Sample Fraudulent</h4>
+      <table>
+        <tr><td>Step</td><td>1</td></tr>
+        <tr><td>Type</td><td>TRANSFER</td></tr>
+        <tr><td>Amount</td><td>181.00</td></tr>
+        <tr><td>Old Bal (S)</td><td>181.00</td></tr>
+        <tr><td>New Bal (S)</td><td>0.00</td></tr>
+        <tr><td>Old Bal (R)</td><td>0.00</td></tr>
+        <tr><td>New Bal (R)</td><td>0.00</td></tr>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

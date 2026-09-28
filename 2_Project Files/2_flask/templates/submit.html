@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Result | FraudGuard</title>
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      padding: 30px 15px;
+    }
+
+    .page { max-width: 680px; width: 100%; }
+
+    /* ── RESULT CARD ── */
+    .result-card {
+      border-radius: 24px;
+      padding: 45px 40px;
+      text-align: center;
+      border: 1px solid;
+      margin-bottom: 24px;
+      backdrop-filter: blur(12px);
+    }
+    .result-card.fraud {
+      background: rgba(233,69,96,0.1);
+      border-color: rgba(233,69,96,0.35);
+    }
+    .result-card.legit {
+      background: rgba(74,222,128,0.08);
+      border-color: rgba(74,222,128,0.3);
+    }
+    .result-card.error {
+      background: rgba(251,191,36,0.08);
+      border-color: rgba(251,191,36,0.3);
+    }
+
+    .result-icon { font-size: 5em; margin-bottom: 15px; }
+
+    .result-title {
+      font-size: 2em;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+    .fraud  .result-title { color: #e94560; }
+    .legit  .result-title { color: #4ade80; }
+    .error  .result-title { color: #fbbf24; }
+
+    .advice {
+      font-size: 1em;
+      color: #a8b2d8;
+      line-height: 1.6;
+      max-width: 480px;
+      margin: 0 auto 30px;
+    }
+
+    /* ── PROBABILITY BAR ── */
+    .prob-section { margin-bottom: 30px; }
+    .prob-section h3 { font-size: 1em; color: #a8b2d8; margin-bottom: 15px; }
+
+    .bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; font-size: 0.9em; }
+    .bar-label { width: 90px; text-align: right; color: #a8b2d8; }
+    .bar-track {
+      flex: 1;
+      height: 14px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      border-radius: 20px;
+      transition: width 1s ease;
+    }
+    .bar-fill.fraud-bar  { background: linear-gradient(90deg, #e94560, #ff6b6b); }
+    .bar-fill.legit-bar  { background: linear-gradient(90deg, #4ade80, #22c55e); }
+    .bar-value { width: 55px; font-weight: 700; }
+
+    /* ── TRANSACTION SUMMARY ── */
+    .summary-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 25px 30px;
+      margin-bottom: 24px;
+    }
+    .summary-card h3 {
+      font-size: 1em;
+      color: #a8b2d8;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px 20px;
+    }
+    .summary-item { font-size: 0.9em; }
+    .summary-item .key   { color: #a8b2d8; margin-bottom: 3px; font-size: 0.85em; }
+    .summary-item .value { color: #fff; font-weight: 600; }
+
+    /* ── ACTION BUTTONS ── */
+    .actions {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      padding: 13px 35px;
+      border-radius: 50px;
+      font-size: 0.98em;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.3s;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-primary { background: #e94560; color: #fff; }
+    .btn-primary:hover { background: #c73652; transform: scale(1.04); }
+    .btn-outline {
+      background: transparent;
+      border: 2px solid rgba(255,255,255,0.25);
+      color: #fff;
+    }
+    .btn-outline:hover { border-color: #e94560; color: #e94560; }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ── RESULT ── -->
+  <div class="result-card {{ result_type }}">
+    <div class="result-icon">{{ icon }}</div>
+    <div class="result-title">{{ result }}</div>
+    <p class="advice">{{ advice }}</p>
+
+    <!-- Probability Bars -->
+    <div class="prob-section">
+      <h3>Prediction Confidence</h3>
+
+      <div class="bar-row">
+        <span class="bar-label">Fraud</span>
+        <div class="bar-track">
+          <div class="bar-fill fraud-bar" style="width: {{ fraud_prob }}%"></div>
+        </div>
+        <span class="bar-value" style="color:#e94560">{{ fraud_prob }}%</span>
+      </div>
+
+      <div class="bar-row">
+        <span class="bar-label">Legit</span>
+        <div class="bar-track">
+          <div class="bar-fill legit-bar" style="width: {{ legit_prob }}%"></div>
+        </div>
+        <span class="bar-value" style="color:#4ade80">{{ legit_prob }}%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TRANSACTION SUMMARY ── -->
+  {% if transaction %}
+  <div class="summary-card">
+    <h3>📋 Transaction Summary</h3>
+    <div class="summary-grid">
+      {% for key, val in transaction.items() %}
+      <div class="summary-item">
+        <div class="key">{{ key }}</div>
+        <div class="value">{{ val }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- ── ACTIONS ── -->
+  <div class="actions">
+    <a href="/predict" class="btn btn-primary">🔍 Check Another</a>
+    <a href="/" class="btn btn-outline">🏠 Home</a>
+  </div>
+
+</div>
+
+</body>
+</html>
